@@ -1,0 +1,49 @@
+buildscript {
+    repositories {
+        maven { url "http://repo.spring.io/libs-snapshot" }
+        mavenLocal()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.0.0.RC4")
+    }
+}
+
+apply plugin: 'groovy'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'war'
+
+task copyDocs(type: Copy) {
+   from 'frontend/dist'
+   into 'src/main/webapp'
+}
+
+copyDocs.dependsOn ':frontend:grunt_build'
+war.dependsOn copyDocs
+
+war {
+    baseName = 'gHipster'
+    version = '0.1.0'
+}
+
+repositories {
+    mavenCentral()
+    maven { url "http://repo.spring.io/libs-snapshot" }
+}
+
+dependencies {
+
+    compile "org.springframework.boot:spring-boot-starter-web"
+    compile "org.codehaus.groovy:groovy-all:2.1.7"
+    compile 'com.google.guava:guava:16.0.1'
+
+    //js
+    compile 'org.webjars:bootstrap:3.1.1'
+    compile 'org.webjars:angularjs:1.2.14'
+    compile 'org.webjars:underscorejs:1.6.0-1'
+    //test
+    testCompile "org.spockframework:spock-core:0.7-groovy-2.0"
+    //e2e test
+    testCompile "org.gebish:geb-spock:0.9.2"
+}
