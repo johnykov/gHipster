@@ -6,10 +6,13 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.0.0.RC4")
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
     }
 }
 
+apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'groovy'
+apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
 apply plugin: 'war'
@@ -28,7 +31,7 @@ war {
 }
 
 repositories {
-    mavenCentral()
+    jcenter()
     maven { url "http://repo.spring.io/libs-snapshot" }
 }
 
