@@ -1,7 +1,6 @@
 package pl.jan.persistance
 
 import groovy.transform.TypeChecked
-import pl.jan.model.Item
 import spock.lang.Specification
 
 @TypeChecked

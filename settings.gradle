@@ -1,2 +1,1 @@
-include 'frontend'
-project(':frontend').name = 'frontend'
+include 'backend', 'frontend'

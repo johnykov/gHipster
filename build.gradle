@@ -1,42 +1,91 @@
-buildscript {
-    repositories {
-        maven { url "http://repo.spring.io/libs-snapshot" }
-        mavenLocal()
-        jcenter()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.0.0.RC4")
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
-    }
-}
-
-apply plugin: 'com.github.ben-manes.versions'
-apply plugin: 'groovy'
-apply plugin: 'java'
 apply plugin: 'idea'
-apply plugin: 'spring-boot'
-apply plugin: 'war'
 
-task copyDocs(type: Copy) {
-   from 'frontend/dist'
-   into 'src/main/webapp'
+buildscript {
+  repositories {
+    mavenLocal()
+    jcenter()
+  }
+  dependencies {
+    classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.3.0.RELEASE'
+    classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
+    classpath 'com.moowork.gradle:gradle-grunt-plugin:0.5'
+  }
 }
 
-copyDocs.dependsOn ':frontend:grunt_build'
-war.dependsOn copyDocs
+task wrapper(type: Wrapper) {
+  gradleVersion = '2.14'
+}
 
-war {
+configure(subprojects) {
+  group = "org.ghipster"
+}
+
+project(':frontend') {
+  apply plugin: 'grunt'
+
+// makes sure on each build that grunt is installed
+  grunt_build.dependsOn 'installGrunt'
+
+// processes your package.json before running grunt build
+  grunt_build.dependsOn 'npmInstall'
+
+  task(build) << {
+    println "ui built complete"
+  }
+
+  build.dependsOn grunt_build
+
+  task clean(type: Delete) {
+    delete 'dist'
+    delete '.tmp'
+  }
+
+//    apply plugin: 'gulp'
+//    apply plugin: NpmInstallPlugin
+//    build.dependsOn gulp_build
+//
+//    task gulp_run(dependsOn: ['gulp_default'])
+//    task bower(dependsOn: ['gulp_bower'])
+}
+
+project(':backend') {
+  apply plugin: 'com.github.ben-manes.versions'
+  apply plugin: 'groovy'
+  apply plugin: 'java'
+  apply plugin: 'idea'
+  apply plugin: 'spring-boot'
+  apply plugin: 'war'
+
+  task cleanDist(type: Delete) {
+    delete 'src/main/webapp'
+  }
+
+  clean.dependsOn cleanDist
+
+  task copyDist(type: Copy) {
+    from project(':frontend').file('dist')
+    into 'src/main/webapp'
+  }
+
+  copyDist.dependsOn cleanDist
+
+  compileJava.dependsOn ':frontend:build'
+
+  sourceCompatibility = 1.8
+  targetCompatibility = 1.8
+
+  war {
     baseName = 'gHipster'
     version = '0.1.0'
-}
+  }
 
-repositories {
+  war.dependsOn copyDist
+
+  repositories {
     jcenter()
-    maven { url "http://repo.spring.io/libs-snapshot" }
-}
+  }
 
-dependencies {
-
+  dependencies {
     compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.codehaus.groovy:groovy-all:2.1.7"
     compile 'com.google.guava:guava:16.0.1'
@@ -49,8 +98,9 @@ dependencies {
     testCompile "org.spockframework:spock-core:0.7-groovy-2.0"
     //e2e test
     testCompile "org.gebish:geb-spock:0.9.2"
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.12'
+  }
+//
+//    springBoot {
+//        mainClass = "pl.jan.Application"
+//    }
 }

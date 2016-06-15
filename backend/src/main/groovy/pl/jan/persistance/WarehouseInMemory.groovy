@@ -4,8 +4,6 @@ import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
 import pl.jan.model.Item
 
-import static com.google.common.base.Preconditions.checkArgument
-
 @Slf4j
 @TypeChecked
 class WarehouseInMemory implements Warehouse {
