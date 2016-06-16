@@ -54,7 +54,7 @@ project(':backend') {
   apply plugin: 'java'
   apply plugin: 'idea'
   apply plugin: 'spring-boot'
-  apply plugin: 'war'
+//  apply plugin: 'war'
 
   task cleanDist(type: Delete) {
     delete 'src/main/resources/public'
@@ -67,6 +67,8 @@ project(':backend') {
     into 'src/main/resources/public'
   }
 
+//  bootRun.dependsOn cleanDist
+
   copyDist.dependsOn cleanDist
 
   copyDist.dependsOn ':frontend:build'
@@ -74,12 +76,12 @@ project(':backend') {
   sourceCompatibility = 1.8
   targetCompatibility = 1.8
 
-  war {
+  jar {
     baseName = 'gHipster'
     version = '0.1.0'
   }
 
-  war.dependsOn copyDist
+  processResources.dependsOn copyDist
 
   repositories {
     jcenter()

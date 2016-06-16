@@ -28,10 +28,11 @@ var config = {
       {test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/, loader: 'file'}
     ]
   },
+  devtool: 'source-map', //this should be disabled for prod
   devServer: {
     contentBase: "app",
     port: "9090",
-    historyApiFallback: true, //html5mode on for dev
+    // historyApiFallback: true, //html5mode on for dev
     proxy: {
       '/api/*': {
         target: 'http://localhost:8080'
