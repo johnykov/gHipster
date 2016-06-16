@@ -11,3 +11,4 @@ dist
 *bower_*
 *webapp*
 *public*
+npm-debug.log

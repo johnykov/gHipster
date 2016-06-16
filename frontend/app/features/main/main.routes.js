@@ -4,7 +4,9 @@ mainRoutes.$inject = ['$stateProvider'];
 
 export default function mainRoutes($stateProvider) {
   $stateProvider.state('main1', { //why main doesn't work?
-      url: '/',
-      template: require('./main.html')
-    });
+    url: '/',
+    template: require('./main.html'),
+    controller: 'MainController',
+    controllerAs: 'main'
+  });
 }

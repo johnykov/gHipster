@@ -31,7 +31,12 @@ var config = {
   devServer: {
     contentBase: "app",
     port: "9090",
-    historyApiFallback: true //html5mode on for dev
+    historyApiFallback: true, //html5mode on for dev
+    proxy: {
+      '/api/*': {
+        target: 'http://localhost:8080'
+      }
+    }
   }
 };
 

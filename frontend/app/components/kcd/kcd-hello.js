@@ -12,7 +12,6 @@ export default ngModule => {
       controllerAs: 'vm',
       controller: function () {
         const vm = this;
-        $log.info("hello");
         vm.greeting = "Hello Webpack";
       },
       link: (scope, element) => {
