@@ -1,6 +1,7 @@
 # gHipster
 
-Simple project to quickly start developing a web application using AngularJS and Akka HTTP,
+Simple project to quickly start developing a web application using AngularJS and Spring boot.
+This configuration uses gradle and webpack.
 
 ## Requirements
 
